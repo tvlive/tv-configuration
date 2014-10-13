@@ -33,9 +33,16 @@ class TestSmoke(unittest.TestCase):
                     continue
                 content_channel_url_today = tv_api_base_url + channel_json['uriToday']
                 json_tv_content_today = self._request_TV_API(content_channel_url_today.encode())
-                # for json_tv_content in json_tv_content_today:
-                    # start_datetime = datetime.strstrptime('Jun 1 2005  1:33PM', '%b %d %Y %I:%M%p')
-                    # end_datetime = datetime.strptime('Jun 1 2005  1:33PM', '%b %d %Y %I:%M%p')
+                times = []
+                for json_tv_content in json_tv_content_today:
+                    times.append(datetime.datetime.strptime(json_tv_content['start'].replace(':','.'), "%Y-%m-%dT%H.%M.%S"))
+                    times.append(datetime.datetime.strptime(json_tv_content['end'].replace(':','.'), "%Y-%m-%dT%H.%M.%S"))
+
+                for i in range(len(times)):
+                    if i > 0:
+                        if not (times[i] >= times[i - 1]):
+                            print channel_json
+
 
 
 
