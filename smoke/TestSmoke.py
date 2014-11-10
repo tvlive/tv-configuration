@@ -15,7 +15,7 @@ class TestSmoke(unittest.TestCase):
 
 
     def test_integration_all_platform(self):
-        tv_api_base_url = 'http://localhost:9000'
+        tv_api_base_url = 'http://beta.tvlive.io'
         tv_api_providers = tv_api_base_url + '/providers/channels'
         tv_api_providers_json = self._request_TV_API(tv_api_providers)
 
@@ -41,7 +41,7 @@ class TestSmoke(unittest.TestCase):
                 for i in range(len(times)):
                     if i > 0:
                         if not (times[i] >= times[i - 1]):
-                            print channel_json
+                            print channel_json['name'] + ' ' + str(times[i-1]) + ' ' + str(times[i])
 
 
 
