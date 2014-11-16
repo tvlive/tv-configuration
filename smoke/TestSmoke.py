@@ -16,7 +16,7 @@ class TestSmoke(unittest.TestCase):
 
     def test_integration_all_platform(self):
         tv_api_base_url = 'http://beta.tvlive.io'
-        tv_api_providers = tv_api_base_url + '/providers/channels'
+        tv_api_providers = tv_api_base_url + '/providers'
         tv_api_providers_json = self._request_TV_API(tv_api_providers)
 
         for provider in tv_api_providers_json:
