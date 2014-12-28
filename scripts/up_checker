@@ -1,0 +1,9 @@
+#!/bin/bash
+play_running=$(ps aux | grep java | grep -v 'grep' | awk '{ print $2 }' | wc -l)
+if [ $play_running -eq 0 ]
+then
+	sudo rm /opt/freeview-api/RUNNING_PID
+        sudo service freeview-api start
+else 
+	echo 'tv-api is running and no problem detected'
+fi

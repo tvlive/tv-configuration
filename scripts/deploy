@@ -1,0 +1,22 @@
+zip_suffix=".zip"
+file_prefix="surferstv-"
+file_version=$file_prefix$1
+file_zip=$file_version$zip_suffix
+echo "copy $file_zip into /opt"
+sudo cp $file_zip /opt
+echo "removing previous backup"
+sudo rm -fr /opt/freeview-apiOLD
+echo "stopping the service"
+sudo service freeview-api stop
+echo "moving current version to backup"
+sudo mv /opt/freeview-api /opt/freeview-apiOLD
+echo "unzip $file_zip"
+sudo unzip /opt/$file_zip -d /opt
+echo "removing file $file_zip"
+sudo rm /opt/$file_zip
+echo "renaming folder $file_version to freeview-api"
+sudo mv /opt/$file_version /opt/freeview-api
+echo "changing owners of $file_version"
+sudo chown -R playframework:nogroup /opt/freeview-api
+echo "starting the service"
+sudo service freeview-api start
