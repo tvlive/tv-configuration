@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+# chkconfig: 2345 95 20
+# description: Some description
+# What your script does (not sure if this is necessary though)
+# processname: freeview-api
+ 
+#replace accordingly in these variables 'myapp' for the name of your app
+DAEMON_NAME=freeview-api
+DAEMON_PATH=/opt/freeview-api
+PID_FILE=$DAEMON_PATH/RUNNING_PID
+DAEMON=$DAEMON_PATH/bin/surferstv
+ 
+test -x $DAEMON || exit 0
+ 
+set -e
+  
+function killDAEMON() {
+  echo "start kill daemon"
+  kill -9 `cat $DAEMON_PATH/RUNNING_PID`
+  echo "end kill daemon"
+}
+ 
+function removePIDFile() {
+  if [ -e $PID_FILE ]
+  then
+    rm -f $PID_FILE
+  fi
+}
+  
+case $1 in
+  start)
+        removePIDFile
+        echo "Starting $DAEMON_NAME... $DAEMON"
+        nohup $DAEMON &
+        ;;
+  restart)
+        echo "Hot restart of $DAEMON_NAME"
+        killDAEMON
+        removePIDFile
+        COMMAND="nohup $DAEMON &";
+        echo $COMMAND
+        `$COMMAND`
+        rm -f $PID_FILE
+        ;;
+  stop)
+        echo "Stopping $DAEMON_NAME"
+        killDAEMON
+        removePIDFile
+        ;;
+  *)
+        echo "Usage: $DAEMON_NAME {start|restart|stop}" >&2
+        exit 1
+        ;;
+esac
+  
+exit 0
