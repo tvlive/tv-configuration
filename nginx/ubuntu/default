@@ -44,7 +44,10 @@ server {
 
         location ~* \.(png)$ {
                root /opt/images/;     
-#               error_page             404 = /no_found.png;  
+               expires 1M;
+  	       access_log off;
+  	       add_header Cache-Control "public";
+               #   error_page             404 = /no_found.png;  
         }
     	
         location /doc/ {
