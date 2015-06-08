@@ -1,0 +1,18 @@
+proxy:
+  image: avilaplana/tvlive-nginx
+  links:
+  - api:tv-api
+  ports:
+  - "80:80"
+api:
+  image: avilaplana/tvlive-api
+  links:
+   - db:mongo
+  environment:
+    HOST_TVLIVE: http://192.168.59.103
+crawler:
+  image: avilaplana/tvlive-crawler
+  links:
+  - db:mongo
+db:
+  image: mongo
