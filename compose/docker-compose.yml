@@ -9,7 +9,7 @@ api:
   links:
    - db:mongo
   environment:
-    HOST_TVLIVE: http://192.168.59.103
+    HOST_TVLIVE: http://TO_FILL_BY_USER
 crawler:
   image: avilaplana/tvlive-crawler
   links:
