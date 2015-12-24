@@ -1,4 +1,4 @@
-FROM dockerfile/nginx
+FROM nginx
 
-COPY default /etc/nginx/sites-available/default
+COPY default /etc/nginx/conf.d/default.conf
 COPY images /opt/images/

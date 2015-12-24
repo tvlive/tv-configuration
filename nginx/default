@@ -7,11 +7,23 @@ server {
 
 	# Make site accessible from http://localhost/
 	server_name localhost;
-	
+
+	location /token {
+		proxy_pass http://tv-api;
+		# First attempt to serve request as file, then
+		# as directory, then fall back to displaying a 404.
+		#try_files $uri $uri/ /index.html;
+		# Uncomment to enable naxsi on this location
+		# include /etc/nginx/naxsi.rules
+		add_header 'Access-Control-Allow-Origin' *;
+                add_header 'Access-Control-Allow-Credentials' 'true';
+                add_header 'Access-Control-Allow-Methods' 'GET';	
+	}
+
 	location / {
-                if ($request_method !~ ^(GET)$ ) {
-                   return 403;
-                }
+        if ($request_method !~ ^(GET)$ ) {
+           return 403;
+        }
 		proxy_pass http://tv-api;
 		# First attempt to serve request as file, then
 		# as directory, then fall back to displaying a 404.

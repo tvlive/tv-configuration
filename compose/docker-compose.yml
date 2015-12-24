@@ -8,8 +8,13 @@ api:
   image: avilaplana/tvlive-api
   links:
    - db:mongo
+   - auth:tvlive-auth
   environment:
     HOST_TVLIVE: http://TO_FILL_BY_USER
+auth:
+  image: avilaplana/tvlive-auth
+  links:
+   - db:mongo
 crawler:
   image: avilaplana/tvlive-crawler
   links:
