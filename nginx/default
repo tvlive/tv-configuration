@@ -1,4 +1,4 @@
-server {
+	server {
 	listen 80 default_server;
 	listen [::]:80 default_server ipv6only=on;
 
@@ -9,37 +9,39 @@ server {
 	server_name localhost;
 
 	location /token {
-		proxy_pass http://tv-api;
-		# First attempt to serve request as file, then
-		# as directory, then fall back to displaying a 404.
-		#try_files $uri $uri/ /index.html;
-		# Uncomment to enable naxsi on this location
-		# include /etc/nginx/naxsi.rules
-		add_header 'Access-Control-Allow-Origin' *;
-                add_header 'Access-Control-Allow-Credentials' 'true';
-                add_header 'Access-Control-Allow-Methods' 'GET';	
+		proxy_pass http://tv-api;			
 	}
 
 	location / {
-        if ($request_method !~ ^(GET)$ ) {
-           return 403;
-        }
-		proxy_pass http://tv-api;
-		# First attempt to serve request as file, then
-		# as directory, then fall back to displaying a 404.
-		#try_files $uri $uri/ /index.html;
-		# Uncomment to enable naxsi on this location
-		# include /etc/nginx/naxsi.rules
-		add_header 'Access-Control-Allow-Origin' *;
-                add_header 'Access-Control-Allow-Credentials' 'true';
-                add_header 'Access-Control-Allow-Methods' 'GET';	
+		if ($request_method = 'OPTIONS') {
+	        add_header 'Access-Control-Allow-Origin' '*';
+	        add_header 'Access-Control-Allow-Credentials' 'true';
+	        add_header 'Access-Control-Allow-Methods' 'GET, OPTIONS';
+	        add_header 'Access-Control-Allow-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization';
+	        add_header 'Access-Control-Max-Age' 1728000;
+	        add_header 'Content-Type' 'text/plain charset=UTF-8';
+	        add_header 'Content-Length' 0;
+	        return 204;
+	    }
+
+	    if ($request_method = 'GET') {
+			proxy_pass http://tv-api;
+			add_header 'Access-Control-Allow-Origin' *;
+	        add_header 'Access-Control-Allow-Credentials' 'true';
+	        add_header 'Access-Control-Allow-Methods' 'GET,OPTIONS';
+			add_header 'Access-Control-Allow-Headers' 'DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization';	    
+		}
+
+		if ($request_method = 'POST') {
+	        return 403;
+		}	        
 	}
 
- 	location /images/ {
-                proxy_pass http://img.omdbapi.com/?apikey=7d97a9b3&i=;
+	location /images/ {
+       	proxy_pass http://img.omdbapi.com/?apikey=7d97a9b3&i=;
 		#rewrite ^/images/(.*)  http://img.omdbapi.com/?i=$1&apikey=7d97a9b3 permanent;
-                #rewrite ^/images/(.*)  http://www.google.com/$1 permanent;
-        }
+        #rewrite ^/images/(.*)  http://www.google.com/$1 permanent;
+       }
 
 	location ~* \.(png)$ {
                root /opt/images/;
