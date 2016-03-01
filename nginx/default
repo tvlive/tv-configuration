@@ -38,9 +38,7 @@
 	}
 
 	location /images/ {
-       	proxy_pass http://img.omdbapi.com/?apikey=7d97a9b3&i=;
-		#rewrite ^/images/(.*)  http://img.omdbapi.com/?i=$1&apikey=7d97a9b3 permanent;
-        #rewrite ^/images/(.*)  http://www.google.com/$1 permanent;
+       	proxy_pass http://img.omdbapi.com/?apikey=YOUR_API_KEY&i=;
        }
 
 	location ~* \.(png)$ {
